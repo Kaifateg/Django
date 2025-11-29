@@ -6,8 +6,8 @@ from .models import CustomUser
 
 # Create your views here.
 base_employee_queryset = CustomUser.objects.exclude(
-    models.Q(first_name__exact='') & models.Q(last_name__exact='')
-).exclude(username='admin')
+    models.Q(first_name__exact='') | models.Q(last_name__exact='')
+).exclude(username='admin').order_by('first_name')
 
 
 class HomeView(ListView):
