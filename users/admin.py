@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from assignment.models import EmployeeSkill
+from assignment.models import EmployeeSkill, UserImage
 from .models import CustomUser
 
 
@@ -10,8 +10,17 @@ class EmployeeSkillInline(admin.TabularInline):
     extra = 1
 
 
+class UserImageInline(admin.TabularInline):
+    model = UserImage
+    extra = 1
+    fields = ('image', 'order',)
+    ordering = ('order',)
+
+
 class CustomUserAdmin(UserAdmin):
-    inlines = [EmployeeSkillInline, ]
+
+    inlines = [EmployeeSkillInline, UserImageInline, ]
+
     list_display = (
         'username',
         'email',
@@ -27,10 +36,10 @@ class CustomUserAdmin(UserAdmin):
             'fields': (
                 'first_name',
                 'last_name',
-                'patronymic',  # Отчество
+                'patronymic',
                 'email',
-                'gender',  # Пол
-                'description',  # Описание (RichTextField)
+                'gender',
+                'description',
             )
         }),
         ('Разрешения и группы', {
@@ -40,18 +49,25 @@ class CustomUserAdmin(UserAdmin):
         ('Важные даты', {'fields': ('last_login', 'date_joined')}),
     )
 
-    # Также обновляем набор полей для формы создания НОВОГО пользователя
+    search_fields = ('username', 'email', 'first_name', 'last_name',
+                     'patronymic')
+
+
+class CustomUserCreationFormAdmin(UserAdmin):
+
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'email', 'first_name', 'last_name',
-                       'patronymic', 'gender', 'description', 'password',
-                       'password2'),
+            'fields': (
+                'username', 'email', 'first_name', 'last_name',
+                'patronymic', 'gender', 'description', 'password',
+                'password2'
+            ),
         }),
     )
 
-    search_fields = ('username', 'email', 'first_name', 'last_name',
-                     'patronymic')
+    list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff',)
+    fieldsets = ()
 
 
 admin.site.register(CustomUser, CustomUserAdmin)

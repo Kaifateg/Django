@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Профиль {{ object.get_full_name }}{% endblock %}
+
+{% block content %}
+    <h1>Подробная информация о сотруднике</h1>
+
+    <div class="user-profile">
+        <h2>{{ object.first_name }} {{ object.last_name }} {{ object.patronymic|default:"" }}</h2>
+
+        <p><strong>Пол:</strong>
+            {% if object.gender == 'M' %}Мужской
+            {% elif object.gender == 'F' %}Женский
+            {% else %}Не указан
+            {% endif %}
+        </p>
+
+        {% if object.description %}
+            <h3>Описание</h3>
+            <div>{{ object.description|safe }}</div>
+        {% endif %}
+
+        <h3>Навыки и уровень освоения</h3>
+        {% if object.skill_levels.all %}
+            <ul>
+                {% for es in object.skill_levels.all %}
+                    <li>{{ es.skill.name }}: Уровень {{ es.level }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Навыки отсутствуют.</p>
+        {% endif %}
+
+        <h3>Галерея изображений</h3>
+        {% if object.images.all %}
+            <div class="image-gallery">
+                {% for image in object.images.all %}
+                    <figure style="display: inline-block; margin: 10px;">
+                        <img src="{{ image.image.url }}" alt="Изображение {{ image.order }}" style="max-width: 200px; height: auto;">
+                        <figcaption>Порядок: {{ image.order }}</figcaption>
+                    </figure>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Фотографии отсутствуют.</p>
+        {% endif %}
+    </div>
+{% endblock %}

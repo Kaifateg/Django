@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Все сотрудники{% endblock %}
+
+{% block content %}
+    <h1>Список всех сотрудников</h1>
+
+    <div class="employee-grid">
+        {% for user in object_list %}
+            {% include 'includes/users/user_stats.html' with user=user %}
+        {% empty %}
+            <p>Сотрудники не найдены.</p>
+        {% endfor %}
+    </div>
+
+    <p><a href="{% url 'users:home' %}">Вернуться на главную</a></p>
+
+{% endblock %}

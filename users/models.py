@@ -17,9 +17,6 @@ class CustomUser(AbstractUser):
 
     description = RichTextField(blank=True, null=True, verbose_name="Описание")
 
-    # Навыки остаются в отдельном приложении assignment (пока оставим так)
-    # skills = models.ManyToManyField(...)
-
     class Meta:
         verbose_name = "Пользователь/Сотрудник"
         verbose_name_plural = "Пользователи/Сотрудники"

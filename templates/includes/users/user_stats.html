@@ -1,0 +1,24 @@
+<div class="employee-card">
+
+    <!-- Ссылка теперь только на имени сотрудника -->
+    <h3>
+        <a href="{% url 'users:user_detail' pk=user.pk %}">
+            {{ user.first_name }}
+            {{ user.last_name }}
+        </a>
+    </h3>
+
+    <div class="skills-list">
+        {% if user.skill_levels.all %}
+            <h4>Навыки:</h4>
+            <ul>
+                {% for es in user.skill_levels.all %}
+                    <li>{{ es.skill.name }} (Уровень {{ es.level }}/10)</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p><small>Навыки не указаны.</small></p>
+        {% endif %}
+    </div>
+
+</div>

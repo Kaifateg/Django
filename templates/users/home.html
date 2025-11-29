@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Главная страница проекта{% endblock %}
+
+{% block content %}
+    <h1>Добро пожаловать в проект SeatSync</h1>
+    <p>Описание проекта: Здесь вы найдете информацию о наших замечательных сотрудниках. На главной странице показаны несколько ключевых профилей.</p>
+
+    <h2>Некоторые из наших сотрудников:</h2>
+
+    <div class="employee-grid">
+        <!-- object_list в HomeView содержит только 5 сотрудников -->
+        {% for user in object_list %}
+             <!-- Включаем частичный шаблон точно так же -->
+            {% include 'includes/users/user_stats.html' with user=user %}
+        {% empty %}
+            <p>Сотрудники не найдены.</p>
+        {% endfor %}
+    </div>
+    
+    <p>
+        <a href="{% url 'users:index' %}">Посмотреть полный список сотрудников &rarr;</a>
+    </p>
+
+{% endblock %}

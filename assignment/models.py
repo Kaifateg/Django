@@ -36,3 +36,29 @@ class EmployeeSkill(models.Model):
     def __str__(self):
         return f"{self.user} - {self.skill.name}: Уровень {self.level}"
 
+
+class UserImage(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='images',
+        on_delete=models.CASCADE,
+        verbose_name="Сотрудник"
+    )
+    image = models.ImageField(
+        upload_to='user_gallery/',
+        verbose_name="Изображение"
+    )
+    order = models.PositiveIntegerField(
+        default=0,
+        blank=True,
+        null=True,
+        verbose_name="Порядковый номер"
+    )
+
+    class Meta:
+        verbose_name = "Изображение сотрудника"
+        verbose_name_plural = "Изображения сотрудников"
+        ordering = ['order', 'id']
+
+    def __str__(self):
+        return f"Изображение {self.order} для {self.user.username}"

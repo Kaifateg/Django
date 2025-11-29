@@ -1,0 +1,25 @@
+.employee-card {
+    display: block;
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    color: black;
+    transition: background-color 0.3s;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.employee-card:hover {
+    background-color: #f4f4f4;
+}
+
+.card-gallery img {
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.skills-list ul {
+    padding-left: 20px;
+    margin-top: 5px;
+}
