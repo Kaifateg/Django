@@ -43,9 +43,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'debug_toolbar',
-    'workspace',
+
+    'users.apps.UsersConfig',
     'assignment',
+    'workspace',
+    'debug_toolbar',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [
@@ -139,3 +142,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 INTERNAL_IPS = [
     '127.0.0.1'
 ]
+
+AUTH_USER_MODEL = 'users.CustomUser'
