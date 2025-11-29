@@ -40,6 +40,7 @@ class CustomUserAdmin(UserAdmin):
                 'email',
                 'gender',
                 'description',
+                'hire_date',
             )
         }),
         ('Разрешения и группы', {
@@ -60,7 +61,7 @@ class CustomUserCreationFormAdmin(UserAdmin):
             'classes': ('wide',),
             'fields': (
                 'username', 'email', 'first_name', 'last_name',
-                'patronymic', 'gender', 'description', 'password',
+                'patronymic', 'gender', 'description', 'hire_date', 'password',
                 'password2'
             ),
         }),

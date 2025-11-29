@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from ckeditor.fields import RichTextField
+from datetime import date
 
 
 # Create your models here.
@@ -16,6 +17,16 @@ class CustomUser(AbstractUser):
                               null=True, verbose_name="Пол")
 
     description = RichTextField(blank=True, null=True, verbose_name="Описание")
+
+    hire_date = models.DateField(null=True, blank=True,
+                                 verbose_name="Дата приёма на работу")
+
+    def years_of_service(self):
+        if self.hire_date:
+            today = date.today()
+            days = (today - self.hire_date).days
+            return days
+        return None
 
     class Meta:
         verbose_name = "Пользователь/Сотрудник"

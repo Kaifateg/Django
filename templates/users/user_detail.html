@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Профиль {{ object.get_full_name }}{% endblock %}
 
@@ -6,14 +7,49 @@
     <h1>Подробная информация о сотруднике</h1>
 
     <div class="user-profile">
-        <h2>{{ object.first_name }} {{ object.last_name }} {{ object.patronymic|default:"" }}</h2>
 
-        <p><strong>Пол:</strong>
-            {% if object.gender == 'M' %}Мужской
-            {% elif object.gender == 'F' %}Женский
-            {% else %}Не указан
-            {% endif %}
-        </p>
+        <div class="profile-header" style="display: flex; align-items: center; gap: 20px;">
+            <div class="main-photo">
+                {% if object.images.first %}
+                    <img src="{{ object.images.first.image.url }}"
+                         alt="Заглавное фото {{ object.username }}"
+                         style="max-width: 150px; border-radius: 8px;">
+                {% else %}
+                    <img src="{% static 'images/default_avatar.png' %}"
+                         alt="Нет фото"
+                         style="max-width: 150px; border-radius: 8px;">
+                {% endif %}
+            </div>
+
+            <div>
+                <h2>
+                    {{ object.first_name }} {{ object.last_name }}
+                    {% if object.patronymic %}{{ object.patronymic }}{% endif %}
+                </h2>
+
+                <p>
+                    <strong>Пол:</strong>
+                    {% if object.gender == 'M' %}Мужской
+                    {% elif object.gender == 'F' %}Женский
+                    {% else %}Не указан
+                    {% endif %}
+                </p>
+
+                {% if object.years_of_service %}
+                    <p><strong>Стаж работы:</strong> {{ object.years_of_service }} дней</p>
+                {% elif object.hire_date %}
+                    <p><strong>Дата приёма:</strong> {{ object.hire_date|date:"d M Y" }}</p>
+                {% else %}
+                    <p><strong>Стаж работы:</strong> Отсутствует</p>
+                {% endif %}
+
+                {% if object.workplace %}
+                    <p><strong>Рабочее место:</strong> Стол №{{ object.workplace.table_number }}</p>
+                {% else %}
+                    <p><strong>Рабочее место:</strong> Не закреплено</p>
+                {% endif %}
+            </div>
+        </div>
 
         {% if object.description %}
             <h3>Описание</h3>
@@ -24,7 +60,7 @@
         {% if object.skill_levels.all %}
             <ul>
                 {% for es in object.skill_levels.all %}
-                    <li>{{ es.skill.name }}: Уровень {{ es.level }}</li>
+                    <li>{{ es.skill.name }}: Уровень {{ es.level }}/10</li>
                 {% endfor %}
             </ul>
         {% else %}
@@ -34,11 +70,15 @@
         <h3>Галерея изображений</h3>
         {% if object.images.all %}
             <div class="image-gallery">
-                {% for image in object.images.all %}
+                {% for image in object.images.all|slice:"1:" %}
                     <figure style="display: inline-block; margin: 10px;">
-                        <img src="{{ image.image.url }}" alt="Изображение {{ image.order }}" style="max-width: 200px; height: auto;">
+                        <img src="{{ image.image.url }}"
+                             alt="Изображение {{ image.order }}"
+                             style="max-width: 200px; height: auto;">
                         <figcaption>Порядок: {{ image.order }}</figcaption>
                     </figure>
+                {% empty %}
+                     <p>Дополнительные фотографии отсутствуют.</p>
                 {% endfor %}
             </div>
         {% else %}
