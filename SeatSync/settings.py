@@ -46,15 +46,15 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "debug_toolbar",
+    "rest_framework",
+    "djoser",
+    "django_filters",
+    "ckeditor",
     "users.apps.UsersConfig",
     "assignment",
     "workspace",
-    "ckeditor",
-    "django_filters",
     "django_cleanup.apps.CleanupConfig",
-    "rest_framework",
-    "djoser",
-    "debug_toolbar",
 ]
 
 REST_FRAMEWORK = {
