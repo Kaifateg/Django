@@ -1,7 +1,7 @@
 from django.views.generic import DetailView, ListView
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import models
 from .models import CustomUser
+from .mixins import ViewerRequiredMixin
 
 
 # Create your views here.
@@ -29,6 +29,6 @@ class UserListView(ListView):
     paginate_by = 10
 
 
-class UserDetailView(LoginRequiredMixin, DetailView):
+class UserDetailView(ViewerRequiredMixin, DetailView):
     model = CustomUser
     template_name = 'users/user_detail.html'

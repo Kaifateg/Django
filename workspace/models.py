@@ -79,7 +79,11 @@ class Workplace(models.Model):
         verbose_name = "Рабочее место (стол)"
         verbose_name_plural = "Рабочие места (столы)"
         ordering = ['table_number']
+        permissions = [
+            ("can_move_employees", "Can move employees between workplaces"),
+        ]
 
     def __str__(self):
-        status = " (Свободно)" if not self.occupied_by else f" (Занято: {self.occupied_by})"
+        status = " (Свободно)" if not self.occupied_by \
+            else f" (Занято: {self.occupied_by})"
         return f"Стол №{self.table_number}{status}"

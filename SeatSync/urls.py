@@ -26,7 +26,11 @@ import debug_toolbar
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('__debug__/', include(debug_toolbar.urls)),
-    path('', include('users.urls'))
+    path('', include('users.urls')),
+    path('api/', include('users.api_urls')),
+    path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.jwt')),
+    path('', include('workspace.urls')),
 ]
 
 if settings.DEBUG:
