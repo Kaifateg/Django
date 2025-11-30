@@ -1,8 +1,10 @@
 from datetime import date, timedelta
+
 from django.test import TestCase
 from django.urls import reverse
-from users.models import CustomUser
+
 from assignment.models import EmployeeSkill, Skill
+from users.models import CustomUser
 
 
 class UserDetailViewTests(TestCase):
@@ -11,22 +13,21 @@ class UserDetailViewTests(TestCase):
         today = date.today()
 
         self.user1 = CustomUser.objects.create_user(
-            username='user1',
-            first_name='Иван',
-            last_name='Иванов',
-            email='user1@example.com',
+            username="user1",
+            first_name="Иван",
+            last_name="Иванов",
+            email="user1@example.com",
             hire_date=today - timedelta(days=100),
-            gender='M'
+            gender="M",
         )
-        EmployeeSkill.objects.create(user=self.user1, skill=self.skill_dev,
-                                     level=8)
+        EmployeeSkill.objects.create(user=self.user1, skill=self.skill_dev, level=8)
 
-        self.url = reverse('users:user_detail', kwargs={'pk': self.user1.pk})
+        self.url = reverse("users:user_detail", kwargs={"pk": self.user1.pk})
 
     def test_detail_page_requires_login(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 302)
-        self.assertIn('/accounts/login/', response.url)
+        self.assertIn("/accounts/login/", response.url)
 
     def test_detail_page_available_to_authenticated_user(self):
         authenticated_client = self.client_class()
@@ -34,7 +35,7 @@ class UserDetailViewTests(TestCase):
 
         response = authenticated_client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'users/user_detail.html')
+        self.assertTemplateUsed(response, "users/user_detail.html")
         self.assertContains(response, "Подробная информация о сотруднике")
 
     def test_detail_page_context_data(self):
@@ -42,13 +43,13 @@ class UserDetailViewTests(TestCase):
         authenticated_client.force_login(self.user1)
         response = authenticated_client.get(self.url)
 
-        self.assertIsInstance(response.context['object'], CustomUser)
-        self.assertEqual(response.context['object'].username, 'user1')
+        self.assertIsInstance(response.context["object"], CustomUser)
+        self.assertEqual(response.context["object"].username, "user1")
 
         self.assertContains(response, "Бэкенд")
         self.assertContains(response, "Уровень 8/10")
 
         self.assertContains(response, "Стаж работы:")
-        self.assertGreater(response.context['object'].years_of_service(), -1)
+        self.assertGreater(response.context["object"].years_of_service(), -1)
 
         self.assertContains(response, "Мужской")

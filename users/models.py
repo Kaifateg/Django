@@ -1,25 +1,30 @@
-from django.db import models
-from django.contrib.auth.models import AbstractUser
-from ckeditor.fields import RichTextField
 from datetime import date
+
+from django.contrib.auth.models import AbstractUser
+from django.db import models
+
+from ckeditor.fields import RichTextField
 
 
 # Create your models here.
 class CustomUser(AbstractUser):
     GENDER_CHOICES = (
-        ('M', 'Мужской'),
-        ('F', 'Женский'),
+        ("M", "Мужской"),
+        ("F", "Женский"),
     )
 
-    patronymic = models.CharField(max_length=100, blank=True, null=True,
-                                  verbose_name="Отчество")
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True,
-                              null=True, verbose_name="Пол")
+    patronymic = models.CharField(
+        max_length=100, blank=True, null=True, verbose_name="Отчество"
+    )
+    gender = models.CharField(
+        max_length=1, choices=GENDER_CHOICES, blank=True, null=True, verbose_name="Пол"
+    )
 
     description = RichTextField(blank=True, null=True, verbose_name="Описание")
 
-    hire_date = models.DateField(null=True, blank=True,
-                                 verbose_name="Дата приёма на работу")
+    hire_date = models.DateField(
+        null=True, blank=True, verbose_name="Дата приёма на работу"
+    )
 
     def years_of_service(self):
         if self.hire_date:
